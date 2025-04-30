@@ -1,0 +1,94 @@
+{% extends 'fitness/base.html' %}
+
+{% block content %}
+<style>
+    .profile-container {
+        max-width: 700px;
+        margin: 60px auto;
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .profile-header {
+        text-align: center;
+        font-size: 36px;
+        font-weight: bold;
+        color: #0ec1ac;
+        margin-bottom: 30px;
+        position: relative;
+        letter-spacing: 1.5px;
+    }
+
+    .profile-header::after {
+        content: '';
+        position: absolute;
+        width: 400px;
+        height: 4px;
+        background: #0ec1ac;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -10px;
+        border-radius: 2px;
+    }
+
+    .profile-info {
+        margin-top: 20px;
+    }
+
+    .info-row {
+        margin-bottom: 18px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+
+    .info-label {
+        font-weight: bold;
+        color: #0ec1ac;
+        font-size: 18px;
+    }
+
+    .info-value {
+        font-size: 18px;
+        color: #444;
+    }
+
+    @media (max-width: 600px) {
+        .info-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="profile-container">
+    <div class="profile-header">{{ user.username }}'s Profile</div>
+
+    <div class="profile-info">
+        <div class="info-row">
+            <div class="info-label">Email:</div>
+            <div class="info-value">{{ user.email }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Date of Birth:</div>
+            <div class="info-value">{{ user_profile.date_of_birth }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Height:</div>
+            <div class="info-value">{{ user_profile.height }} cm</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Weight:</div>
+            <div class="info-value">{{ user_profile.weight }} kg</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Fitness Level:</div>
+            <div class="info-value">{{ user_profile.fitness_level }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

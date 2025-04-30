@@ -1,0 +1,39 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Fitness Tracker{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'fitness/style.css' %}">
+</head>
+<body>
+ 
+<header style="background: #0ec1ac; color: white; text-align: center; padding: 20px; border-bottom: 4px solid #ff9800; font-family: 'Poppins', Arial, sans-serif; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">
+    
+    <h1 style="margin: 0; font-size: 28px;">TrimTrack: Your Personal Fitness Tracker</h1>
+    <nav style="background: #0ec1ac; padding: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+        {% if user.is_authenticated %}
+        <a href="{% url 'home' %}" style="color: #3bff93; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 16px;">HOME</a>         
+        <a href="{% url 'activity_list' %}" style="color: #3bff93; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 16px;">ACTIVITY LIST</a>
+        <a href="{% url 'diet_log' %}" style="color: #3bff93; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 16px;">DIET LOG</a>
+        <a href="{% url 'weight_tracker' %}" style="color: #3bff93; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 16px;">WEIGHT TRACKER</a>
+        <a href="{% url 'logout' %}" style="color: #3bff93; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 16px;">LOGOUT</a>
+        {% else %}
+        <a href="{% url 'register' %}" style="color: #3bff93; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 16px;">REGISTER</a>
+        <a href="{% url 'login' %}" style="color: #3bff93; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 16px;">LOGIN</a>
+        {% endif %}
+        
+        </nav>
+    </header>
+
+    <div class="container" style="width: 80%; margin: 40px auto; padding: 20px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); font-family: 'Poppins', Arial, sans-serif; color: #333; line-height: 1.6;">
+        {% block content %}
+        <!-- Content will be injected here from other templates -->
+        {% endblock %}
+    </div>
+
+   
+</body>
+</html>

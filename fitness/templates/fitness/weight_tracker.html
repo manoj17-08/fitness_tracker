@@ -1,0 +1,56 @@
+{% extends 'fitness/base.html' %}
+
+{% block content %}
+<h2 style="color: #0ec1ac; font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 25px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15); border-bottom: 3px solid #ff9800; display: inline-block; padding-bottom: 8px;">
+    Weight Tracker
+</h2>
+
+<div style="max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 25px 30px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <form method="post">
+        {% csrf_token %}
+        <div style="font-size: 16px; color: #333;">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" style="width: 100%; margin-top: 20px; padding: 14px 0; background: #0ec1ac; color: white; font-weight: bold; font-size: 16px; border: none; border-radius: 8px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); cursor: pointer; transition: background 0.3s ease;">
+            Add Weight Entry
+        </button>
+    </form>
+</div>
+
+<div style="max-width: 700px; margin: 40px auto;">
+    <canvas id="weightChart" width="400" height="200"></canvas>
+</div>
+
+<script>
+    var ctx = document.getElementById('weightChart').getContext('2d');
+    var dataPoints = {{ weights|safe }};
+    var labels = {{ dates|safe }};
+
+    var pointBackgroundColors = new Array(dataPoints.length).fill('rgba(0, 0, 0, 0.1)');
+    var pointBorderColors = new Array(dataPoints.length).fill('rgba(0, 0, 0, 0.1)');
+    var pointRadius = new Array(dataPoints.length).fill(3);
+
+    if (dataPoints.length > 0) {
+        pointBackgroundColors[0] = 'rgb(255, 99, 132)';
+        pointBorderColors[0] = 'rgb(255, 99, 132)';
+        pointRadius[0] = 5;
+    }
+
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Weight Over Time',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: dataPoints,
+                pointBackgroundColor: pointBackgroundColors,
+                pointBorderColor: pointBorderColors,
+                pointRadius: pointRadius
+            }]
+        },
+        options: {}
+    });
+</script>
+{% endblock %}

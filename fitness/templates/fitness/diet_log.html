@@ -1,0 +1,104 @@
+
+{% extends 'fitness/base.html' %}
+
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<h1 style="text-align: center; color: #0ec1ac;">Dietary Log</h1>
+
+<ul style="list-style: none; padding: 0; max-width: 600px; margin: 20px auto;">
+    {% for log in diet_logs %}
+        <li style="background: #f9f9f9; margin: 10px 0; padding: 15px 20px; border-left: 6px solid #0ec1ac; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+            <strong>{{ log.date_time|date:"Y-m-d" }}</strong>: {{ log.food_item }} – <em>Calories:</em> {{ log.calories }}
+        </li>
+    {% empty %}
+        <li style="text-align: center; color: gray;">No dietary logs available.</li>
+    {% endfor %}
+</ul>
+
+<div style="max-width: 700px; margin: 30px auto;">
+    <canvas id="calorieChart"></canvas>
+</div>
+
+<script>
+    const ctx = document.getElementById('calorieChart').getContext('2d');
+    const calorieChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ chart_labels|safe }},
+            datasets: [{
+                label: 'Total Calories Per Day',
+                data: {{ chart_values|safe }},
+                backgroundColor: '#0ec1ac',
+                borderRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Calories'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.y + ' kcal';
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+<!-- Trigger Button -->
+<div style="text-align: center; margin-top: 30px;">
+    <button id="openModal" style="background: #0ec1ac; color: white; padding: 12px 24px; font-size: 16px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; transition: background 0.2s;">Add Dietary Log</button>
+</div>
+
+<!-- Modal -->
+<div id="dietModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 30px; border-radius: 8px; width: 400px; text-align: center;">
+        <h3 style="color: #0ec1ac;">Add Dietary Log</h3>
+        <form method="post" action="{% url 'add_diet_log' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" style="margin-top: 15px; background: #0ec1ac; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; font-size: 15px; cursor: pointer;">Add</button>
+        </form>
+        <button id="closeModal" style="margin-top: 15px; background: #f44336; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; font-size: 15px; cursor: pointer;">Cancel</button>
+    </div>
+</div>
+
+<script>
+    var modal = document.getElementById("dietModal");
+    var openBtn = document.getElementById("openModal");
+    var closeBtn = document.getElementById("closeModal");
+
+    openBtn.onclick = function() {
+        modal.style.display = "flex";
+    }
+
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}

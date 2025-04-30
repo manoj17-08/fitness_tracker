@@ -1,0 +1,137 @@
+{% extends 'fitness/base.html' %}
+
+{% block content %}
+<style>
+    .activity-section {
+        padding: 30px;
+        background: #f8f8f8;
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .activity-section h1 {
+        color: #0ec1ac;
+        margin-bottom: 20px;
+        text-shadow: 0 0 5px rgba(14, 193, 172, 0.4);
+    }
+
+    .activity-section ul {
+        list-style-type: none;
+        padding: 0;
+        margin-bottom: 30px;
+    }
+
+    .activity-section li {
+        background: #e8fafa;
+        border: 1px solid #d0f0f0;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
+
+    .add-link {
+        color: #0ec1ac;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+        margin: 0 15px;
+        display: inline-block;
+        transition: color 0.2s, text-shadow 0.2s;
+    }
+
+    .add-link:hover {
+        color: #ffffff;
+        text-shadow: 0 0 8px #0ec1ac;
+    }
+
+    .chart-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto 50px auto;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="activity-section">
+    <h1>Activity List</h1>
+
+    <ul>
+    {% for activity in activities %}
+        <li>{{ activity.activity_type }}: {{ activity.duration }}, Calories burned: {{ activity.calories_burned }}, Date: {{ activity.date_time|date:"Y-m-d" }}</li>
+    {% empty %}
+        <li>No activities recorded.</li>
+    {% endfor %}
+    </ul>
+
+    <div class="chart-container">
+        <canvas id="calorieChart"></canvas>
+    </div>
+
+    <a href="{% url 'add_activity' %}" class="add-link">Add Activity</a>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const activityData = {{ chart_data|safe }};
+    const labels = Object.keys(activityData);
+    const calories = Object.values(activityData);
+
+    const ctx = document.getElementById('calorieChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Calories Burned',
+                data: calories,
+                backgroundColor: '#0ec1ac',
+                borderColor: '#0a8e82',
+                borderWidth: 2,
+                borderRadius: 6,
+                barThickness: 30,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: '#0a8e82',
+                        font: {
+                            weight: 'bold'
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Daily Calories Burned',
+                    color: '#0ec1ac',
+                    font: {
+                        size: 20,
+                        weight: 'bold'
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#333'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#333'
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

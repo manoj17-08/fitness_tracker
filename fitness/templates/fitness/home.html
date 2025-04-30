@@ -1,0 +1,104 @@
+{% extends 'fitness/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<style>
+    .homepage {
+        background: linear-gradient(135deg, #0a2c2b, #0e3f3c);
+        color: #f0f0f0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 50px 20px;
+        text-align: center;
+    }
+
+    .homepage h1 {
+        font-size: 3em;
+        margin-bottom: 10px;
+        color: #0ec1ac;
+        text-shadow: 0 0 10px rgba(14, 193, 172, 0.6);
+    }
+
+    .homepage p {
+        font-size: 1.2em;
+        margin-bottom: 40px;
+        color: #d1d1d1;
+    }
+
+    .features, .navigation {
+        margin: 40px auto;
+        padding: 30px;
+        max-width: 800px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+        color: #0ec1ac;
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        text-shadow: 0 0 8px #0ec1ac;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        margin: 15px 0;
+    }
+
+    a.nav-link {
+        color: #0ec1ac;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 17px;
+        transition: color 0.3s, text-shadow 0.3s;
+    }
+
+    a.nav-link:hover {
+        color: #ffffff;
+        text-shadow: 0 0 8px #0ec1ac;
+    }
+
+    .welcome-message {
+        margin-bottom: 30px;
+        font-size: 1.1em;
+        color: #ccc;
+    }
+</style>
+
+<div class="homepage">
+    <h1>Welcome to Your Fitness Journey!</h1>
+    <p>Track your fitness journey, monitor your diet, and achieve your goals.</p>
+
+    <section class="features">
+        <h2>Features</h2>
+        <ul>
+            <li><strong>Activity Tracking:</strong> Log your daily activities and workouts.</li>
+            <li><strong>Dietary Logs:</strong> Keep track of your diet and nutrition.</li>
+            <li><strong>Goal Setting:</strong> Set and track your fitness goals.</li>
+        </ul>
+    </section>
+
+    <section class="navigation">
+        <h2>Get Started</h2>
+        <ul>
+            {% if user.is_authenticated %}
+                <p class="welcome-message">Welcome, {{ user.username }}! What would you like to explore?</p>
+                <li><a href="{% url 'profile' %}" class="nav-link">View Profile</a></li>
+                <li><a href="{% url 'activity_list' %}" class="nav-link">View Activity List</a></li>
+                <li><a href="{% url 'diet_log' %}" class="nav-link">Log Your Diet</a></li>
+                <li><a href="{% url 'weight_tracker' %}" class="nav-link">Track Your Weight</a></li>
+                <li><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+            {% else %}
+                <p class="welcome-message">You are not logged in. Please log in or create an account.</p>
+                <li><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                <li><a href="{% url 'register' %}" class="nav-link">Create an Account</a></li>
+            {% endif %}
+        </ul>
+    </section>
+</div>
+{% endblock %}

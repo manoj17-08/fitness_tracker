@@ -1,0 +1,17 @@
+{% extends 'fitness/base.html' %}
+
+{% block content %}
+<h2 style="text-align: center; color: #0ec1ac; margin-bottom: 20px;">Add Dietary Log</h2>
+
+<div style="display: flex; justify-content: center; align-items: center; height: 70vh;">
+    <div style="background: #ffffff; padding: 30px 40px; border-radius: 10px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); width: 400px; max-width: 90%;">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" style="width: 100%; margin-top: 20px; padding: 12px; background: #0ec1ac; color: white; font-weight: bold; font-size: 16px; border: none; border-radius: 5px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); transition: background 0.3s ease, transform 0.2s;">
+                Save
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
