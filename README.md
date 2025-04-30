@@ -51,3 +51,4 @@ python manage.py runserver
 
 If any doubt of this can you contact this mailid: santhoshking529@gmail.com
 
+# fitness_tracker3.0
